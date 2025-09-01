@@ -31,6 +31,8 @@ async function createUser(req, res) {
             }
         )
 
+        res.redirect('/api/users/welcome')
+
     } catch (error) {
         res.status(400).json({ "Error creating user": error.message })
         ////////////////////////////
@@ -64,6 +66,8 @@ async function loginUser(req, res) {
             }
         )
 
+
+
     } catch (error) {
         res.status(400).json({ "Error during login.": error.message })
         console.error(`Error logging in user: ${error}`)
@@ -71,7 +75,8 @@ async function loginUser(req, res) {
 }
 
 function welcomeUser(req, res) {
-
+    if (!req.user) return res.status(401).json({ error: 'You must be logged in to view this page' })
+    res.send(`Welcome ${req.user.username} :)`)
 }
 
 module.exports = {
