@@ -32,7 +32,7 @@ async function createUser(req, res) {
         )
 
     } catch (error) {
-        res.status(400).json({ "Error creating user": error })
+        res.status(400).json({ "Error creating user": error.message })
         ////////////////////////////
         //Take this out at the end//
         ////////////////////////////
@@ -41,7 +41,33 @@ async function createUser(req, res) {
 }
 
 async function loginUser(req, res) {
+    try {
+        const user = await User.findOne({ email: req.body.email })
+        if (!user) return res.status(400).json({ message: "Lemme see your belly button! Apparently you don't exist!" })
 
+        const correctPassword = await user.isCorrectPassword(req.body.password)
+        if (!correctPassword) return res.status(400).json({ message: "That's not the magic word" })
+
+        const payload = {
+            _id: user.id,
+            username: user.username,
+            email: user.email
+        }
+
+        jwt.sign(
+            { data: payload },
+            secret,
+            { expiresIn: expiration },
+            (error, token) => {
+                if (error) throw error
+                res.status(200).json({ success: `Login Successful. Token: ${token}` })
+            }
+        )
+
+    } catch (error) {
+        res.status(400).json({ "Error during login.": error.message })
+        console.error(`Error logging in user: ${error}`)
+    }
 }
 
 function welcomeUser(req, res) {
