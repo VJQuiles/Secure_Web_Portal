@@ -7,15 +7,15 @@ router.post('/login', userController.loginUser)
 
 router.get('/welcome', userController.welcomeUser)
 
-// OAuth
-// router.get('/github', passport.authenticate('github'))
+//OAuth
+router.get('/github', passport.authenticate('github'))
 
-// router.get(
-//     '/github/callback',
-//     passport.authenticate('github', { failureRedirect }),
-//     (req, res) => {
-//         res.redirect('/api/users/welcome')
-//     }
-// )
+router.get(
+    '/github/callback',
+    passport.authenticate('github', { failureRedirect: '/login' }),
+    (req, res) => {
+        res.redirect('/api/users/welcome')
+    }
+)
 
 module.exports = router

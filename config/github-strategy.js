@@ -8,7 +8,8 @@ const randomString = require('randomstring')
 const options = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: process.env.GITHUB_CALLBACK_URL
+    callbackURL: process.env.GITHUB_CALLBACK_URL,
+    scope: ['user:email']
 }
 
 //Here we define the actual strategy. First we identify if the user signing in exists, if not we create a user. 
@@ -16,7 +17,7 @@ const options = {
 // https://www.npmjs.com/package/randomstring
 passport.use(new GithubStrategy(
     options,
-    async (accessToken, refreshToken, Profiler, done) => {
+    async (accessToken, refreshToken, profile, done) => {
         try {
             let user = await User.findOne({ githubId: profile.id })
             ////////////////////////////
