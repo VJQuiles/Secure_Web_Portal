@@ -16,7 +16,7 @@ const bookmarkSchema = new mongoose.Schema(
             default: Date.now
         },
         user: {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
         }

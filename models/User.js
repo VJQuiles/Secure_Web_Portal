@@ -48,7 +48,7 @@ userSchema.pre("save", async function (next) {
         ////////////////////////////
         //Take this out at the end//
         ////////////////////////////
-        console.log(this.password)
+        console.log(`Bcrypt Called ${this.password} Maria said hashed password`)
     }
     next()
 })

@@ -11,9 +11,9 @@ async function createUser(req, res) {
         if (existingUser) return res.status(400).json({ error: 'User already exists' })
 
         const newUser = await User.create(req.body)
-        res.status(201).json({
-            success: `Hello, ${newUser.username}.`
-        })
+        // res.status(201).json({
+        //     success: `Hello, ${newUser.username}.`
+        // })
 
         const payload = {
             _id: newUser.id,
@@ -27,18 +27,17 @@ async function createUser(req, res) {
             { expiresIn: expiration },
             (error, token) => {
                 if (error) throw error
-                res.status(200).json({ success: `User creation successful. Token: ${token}` })
+                return res.status(200).json({ success: `User creation successful. Token: ${token}` })
             }
         )
 
-        res.redirect('/api/users/welcome')
-
     } catch (error) {
-        res.status(400).json({ "Error creating user": error.message })
         ////////////////////////////
         //Take this out at the end//
         ////////////////////////////
         console.error(`Error creating user: ${error}`)
+        return res.status(400).json({ "Error creating user": error.message })
+
     }
 }
 
@@ -69,14 +68,14 @@ async function loginUser(req, res) {
 
 
     } catch (error) {
-        res.status(400).json({ "Error during login.": error.message })
+        res.status(400).json({ error: error.message })
         console.error(`Error logging in user: ${error}`)
     }
 }
 
 function welcomeUser(req, res) {
     if (!req.user) return res.status(401).json({ error: 'You must be logged in to view this page' })
-    res.send(`Welcome ${req.user.username} :)`)
+    res.send(`Welcome ${req.user.username}:)`)
 }
 
 module.exports = {
