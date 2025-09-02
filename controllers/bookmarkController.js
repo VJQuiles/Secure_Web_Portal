@@ -17,6 +17,7 @@ async function getAllBookmarks(req, res) {
     try {
         const bookmarks = await Bookmark.find({ user: req.user._id })
         res.json(bookmarks)
+        ///////////////////////
         console.log(bookmarks)
     } catch (error) {
         res.status(500).json({ error: `Error getting all bookmarks, ${error.message}` })
@@ -25,7 +26,10 @@ async function getAllBookmarks(req, res) {
 
 async function getSingleBookmark(req, res) {
     try {
-
+        const bookmark = await Bookmark.findById(req.params.id)
+        res.json(bookmark)
+        //////////////////
+        console.log(bookmark)
     } catch (error) {
         res.status(500).json({ error: `Error getting desired bookmark, ${error.message}` })
     }
