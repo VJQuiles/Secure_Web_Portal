@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const Bookmark = require('../../models/Bookmark')
 const bookmarkController = require('../../controllers/bookmarkController')
 const verifyUser = require('../../middleware/auth')
 
