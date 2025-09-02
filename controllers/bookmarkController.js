@@ -37,7 +37,11 @@ async function getSingleBookmark(req, res) {
 
 async function updateBookmark(req, res) {
     try {
-
+        const bookmark = await Bookmark.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        if (!bookmark) return res.status(404).json({ message: `No bookmark with id: ${id}` })
+        res.json(bookmark)
+        //////////////////
+        console.log(bookmark)
     } catch (error) {
         res.status(500).json({ error: `Error updating desired bookmark, ${error.message}` })
     }
